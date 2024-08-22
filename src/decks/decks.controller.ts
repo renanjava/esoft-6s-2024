@@ -14,8 +14,8 @@ export class DecksController {
   @Get('create-deck/:commanderName')
   async getNewDeck(@Param('commanderName') commanderName: string) {
     const commander = await this.decksService.fetchCommander(commanderName);
-    return this.decksService.fetchCards(commander.colorIdentity[0]);
-    //const deck = commander + cards;
+    const cards = this.decksService.fetchCards(commander.colorIdentity[0]);
+    return commander + cards;
   }
 
   @Get('cards')
@@ -28,13 +28,13 @@ export class DecksController {
     return { message: 'Test route working!' };
   }
 
-  // @Post('generate')
-  // async generateDeck(
-  //   @Body('commanderName') commanderName: string,
-  //   @Body('userId') userId: string,
-  // ) {
-  //   return this.decksService.generateDeck(commanderName, userId);
-  // }
+  @Post('generate')
+  async generateDeck(
+    @Body('commanderName') commanderName: string,
+    @Body('userId') userId: string,
+  ) {
+    return this.decksService.build(commanderName, userId);
+  }
 
   @Get()
   async findAll() {

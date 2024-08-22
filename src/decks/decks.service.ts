@@ -26,14 +26,24 @@ export class DecksService {
   async fetchCards(cardColor: string) {
     const cardsUrl = `https://api.magicthegathering.io/v1/cards?colorIdentity=${cardColor}`;
     const cardsResponse = await axios.get(cardsUrl);
-    const cards = cardsResponse.data.cards.map((e, i = 0, existingCards = [""]) => {
-      if (i < 100 && !e.name.includes(existingCards)) {
-        i++
-        existingCards.push(e.name)
-        return e
-      }
+    const cards = cardsResponse.data.cards.slice(0, 99);
+    return cards;
+  }
 
-    });
-    console.log(cards.length)
+  async build(commanderName: string, userId: string) {
+    const commander = await this.fetchCommander(commanderName);
+    const allowedColor = commander.colorIdentity.join(',');
+    const cards = await this.fetchCards(allowedColor);
+
+    const deck = [commander, ...cards];
+
+    const createDeckDto: CreateDeckDto = {
+      commander: commander.name,
+      cards: deck,
+      userId: userId,
+    }
+
+    return this.createDeck(createDeckDto);
+
   }
 }

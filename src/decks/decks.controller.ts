@@ -11,9 +11,16 @@ export class DecksController {
     return this.decksService.createDeck(createDeckDto);
   }
 
-  @Get('commander/:commanderName')
-  async getCommander(@Param('commanderName') commanderName: string) {
-    return this.decksService.fetchCommander(commanderName);
+  @Get('create-deck/:commanderName')
+  async getNewDeck(@Param('commanderName') commanderName: string) {
+    const commander = await this.decksService.fetchCommander(commanderName);
+    return this.decksService.fetchCards(commander.colorIdentity[0]);
+    //const deck = commander + cards;
+  }
+
+  @Get('cards')
+  async getCardsColor(@Body('cardColor') cardColor: string) {
+    return
   }
 
   @Get('test')

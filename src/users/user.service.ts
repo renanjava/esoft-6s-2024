@@ -2,10 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './schema/user.schema';
 import { Token } from '@/auth/token';
-import { Password } from '@/utils/password';
 import { LoginUserDto } from './dto/login-user.dto';
 import UserAdapter from './user.adapter';
 import { UserRepository } from './user.repository';
+import bcrypt from "bcrypt";
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -22,9 +23,8 @@ export class UserService {
       throw new Error('Usuário já existe');
     }
 
-    const user: User = this.adapter.createToEntity(newUser);
-    user.password = await Password.generateEncrypted(user.password);
-    await this.userRepository.create(user);
+    const createdUsuario = ({...newUser, password:`${bcrypt.hashSync(newUser.password, 10)}`})
+    await this.userRepository.create(createdUsuario)
   }
 
   public async findAll(){
@@ -35,8 +35,8 @@ export class UserService {
     await this.userRepository.findById(id)
   }
 
-  public async updateById(id: string){
-    await this.userRepository.updateById(id)
+  public async updateById(updateUsuarioDto: UpdateUserDto){
+    await this.userRepository.updateById(updateUsuarioDto)
   }
 
   public async deleteById(id: string){
@@ -49,16 +49,13 @@ export class UserService {
     );
 
     if (!foundUser) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Não encontrado', HttpStatus.NOT_FOUND);
     }
 
-    const userIsValid: boolean | null = await Password.verify(
-      loginUser.password,
-      foundUser.password,
-    );
+    const userIsValid: boolean | null = bcrypt.compareSync(loginUser.password, foundUser.password)
 
     if (!userIsValid) {
-      throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Senha inválida', HttpStatus.UNAUTHORIZED);
     }
 
     return this.token.generateToken(foundUser);

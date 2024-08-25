@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schema/user.schema';
 import { Model } from 'mongoose';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -19,6 +20,14 @@ export class UserRepository {
 
   public async findById(id: string): Promise<User> {
     return this.userModel.findById(id).select(['-password']);
+  }
+
+  public async updateById(updateUserDto: UpdateUserDto){
+    await this.userModel.updateOne({_id: updateUserDto}, {updateUserDto})
+  }
+
+  public async deleteById(id: string){
+    await this.userModel.deleteOne()
   }
 
   public async findByEmailOrUsername(

@@ -19,12 +19,28 @@ export class UserService {
     const existsUser: User | null = await this.validateEmailOrUsername(newUser);
 
     if (existsUser) {
-      throw new Error('User already exists');
+      throw new Error('Usuário já existe');
     }
 
     const user: User = this.adapter.createToEntity(newUser);
     user.password = await Password.generateEncrypted(user.password);
     await this.userRepository.create(user);
+  }
+
+  public async findAll(){
+    await this.userRepository.findAll()
+  }
+
+  public async findById(id: string){
+    await this.userRepository.findById(id)
+  }
+
+  public async updateById(id: string){
+    await this.userRepository.updateById(id)
+  }
+
+  public async deleteById(id: string){
+    await this.userRepository.deleteById(id)
   }
 
   public async login(loginUser: LoginUserDto): Promise<string> {

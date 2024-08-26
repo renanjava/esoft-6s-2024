@@ -32,15 +32,15 @@ export class UserService {
   }
 
   public async findById(id: string){
-    await this.userRepository.findById(id)
+    return await this.userRepository.findById(id)
   }
 
-  public async updateById(updateUsuarioDto: UpdateUserDto){
-    await this.userRepository.updateById(updateUsuarioDto)
+  public async updateById(id: string, updateUsuarioDto: UpdateUserDto){
+    return await this.userRepository.updateById(id, updateUsuarioDto)
   }
 
   public async deleteById(id: string){
-    await this.userRepository.deleteById(id)
+    return await this.userRepository.deleteById(id)
   }
 
   public async login(loginUser: LoginUserDto): Promise<string> {

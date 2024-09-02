@@ -5,7 +5,7 @@ import { Token } from '@/auth/token';
 import { LoginUserDto } from './dto/login-user.dto';
 import UserAdapter from './user.adapter';
 import { UserRepository } from './user.repository';
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
@@ -23,24 +23,27 @@ export class UserService {
       throw new Error('Usuário já existe');
     }
 
-    const createdUsuario = ({...newUser, password:`${bcrypt.hashSync(newUser.password, 10)}`})
-    await this.userRepository.create(createdUsuario)
+    const createdUsuario = {
+      ...newUser,
+      password: `${bcrypt.hashSync(newUser.password, 10)}`,
+    };
+    await this.userRepository.create(createdUsuario);
   }
 
-  public async findAll(){
-    return await this.userRepository.findAll()
+  public async findAll() {
+    return await this.userRepository.findAll();
   }
 
-  public async findById(id: string){
-    return await this.userRepository.findById(id)
+  public async findById(id: string) {
+    return await this.userRepository.findById(id);
   }
 
-  public async updateById(id: string, updateUsuarioDto: UpdateUserDto){
-    return await this.userRepository.updateById(id, updateUsuarioDto)
+  public async updateById(id: string, updateUsuarioDto: UpdateUserDto) {
+    return await this.userRepository.updateById(id, updateUsuarioDto);
   }
 
-  public async deleteById(id: string){
-    return await this.userRepository.deleteById(id)
+  public async deleteById() {
+    return await this.userRepository.deleteById();
   }
 
   public async login(loginUser: LoginUserDto): Promise<string> {
@@ -52,7 +55,10 @@ export class UserService {
       throw new HttpException('Não encontrado', HttpStatus.NOT_FOUND);
     }
 
-    const userIsValid: boolean | null = bcrypt.compareSync(loginUser.password, foundUser.password)
+    const userIsValid: boolean | null = bcrypt.compareSync(
+      loginUser.password,
+      foundUser.password,
+    );
 
     if (!userIsValid) {
       throw new HttpException('Senha inválida', HttpStatus.UNAUTHORIZED);

@@ -26,7 +26,7 @@ export class DecksService {
   async fetchCards(cardColor: Array<string>, quantityColor?: Array<number>) {
     if (quantityColor) {
       let index = -1;
-      quantityColor.forEach(async (e) => {
+      quantityColor.forEach(async () => {
         index++;
         console.log(
           'dentro do quantityColor foreach: ' +

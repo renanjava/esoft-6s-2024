@@ -22,13 +22,13 @@ export class UserRepository {
     return this.userModel.findById(id).select(['-password']);
   }
 
-  public async updateById(id: string, updateUserDto: UpdateUserDto){
-    await this.userModel.updateOne({_id: id}, updateUserDto)
-    return this.findById(id)
+  public async updateById(id: string, updateUserDto: UpdateUserDto) {
+    await this.userModel.updateOne({ _id: id }, updateUserDto);
+    return this.findById(id);
   }
 
-  public async deleteById(id: string){
-    return await this.userModel.deleteOne()
+  public async deleteById() {
+    return await this.userModel.deleteOne();
   }
 
   public async findByEmailOrUsername(

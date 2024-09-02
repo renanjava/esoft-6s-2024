@@ -4,6 +4,12 @@ import { DecksRepository } from './decks.repository';
 import axios from 'axios';
 import { Deck } from './schema/deck.schema';
 
+export function sortedPossibilities(value: number): number {
+  const possibilities = new Array<number>(0.75, 0.5, 0.25);
+  const possibility = Math.floor(Math.random() * 3);
+  return value * possibilities[possibility];
+}
+
 @Injectable()
 export class DecksService {
   constructor(private readonly deckRepository: DecksRepository) {}
@@ -89,9 +95,7 @@ export class DecksService {
     console.log('allowedColors: ' + allowedColors);
     allowedColors.forEach((e) => {
       const logicForSorting = cardQuantity - colorQuantity + index;
-      const valueForSorting = Math.floor(
-        this.sortedPossibilities(logicForSorting),
-      );
+      const valueForSorting = Math.floor(sortedPossibilities(logicForSorting));
       console.log('e[0] foreach: ' + e[0]);
       console.log('variavel contadora foreach: ' + index);
       console.log(
@@ -115,11 +119,5 @@ export class DecksService {
     });
     console.log('final array cardQuantityColors: ' + cardQuantityColors);
     return await this.fetchCards(allowedColors, cardQuantityColors);
-  }
-
-  sortedPossibilities(value: number): number {
-    const possibilities = new Array<number>(0.75, 0.5, 0.25);
-    const possibility = Math.floor(Math.random() * 3);
-    return value * possibilities[possibility];
   }
 }

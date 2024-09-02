@@ -4,7 +4,7 @@ import { CreateDeckDto } from './dto/create-deck.dto';
 
 @Controller('decks')
 export class DecksController {
-  constructor(private readonly decksService: DecksService) { }
+  constructor(private readonly decksService: DecksService) {}
 
   @Post()
   async createDeck(@Body() createDeckDto: CreateDeckDto) {
@@ -19,8 +19,8 @@ export class DecksController {
   }
 
   @Get('cards')
-  async getCardsColor(@Body('cardColor') cardColor: string) {
-    return
+  async getCardsColor() {
+    return;
   }
 
   @Get('test')

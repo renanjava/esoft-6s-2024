@@ -12,4 +12,4 @@ import { Deck, DeckSchema } from './schema/deck.schema';
   controllers: [DecksController],
   providers: [DecksService, DecksRepository],
 })
-export class DecksModule {}
+export class DecksModule { }

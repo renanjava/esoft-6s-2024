@@ -12,7 +12,7 @@ export function sortedPossibilities(value: number): number {
 
 @Injectable()
 export class DecksService {
-  constructor(private readonly deckRepository: DecksRepository) {}
+  constructor(private readonly deckRepository: DecksRepository) { }
 
   async createDeck(createDeckDto: CreateDeckDto): Promise<Deck> {
     return this.deckRepository.create(createDeckDto);
@@ -36,13 +36,13 @@ export class DecksService {
         index++;
         console.log(
           'dentro do quantityColor foreach: ' +
-            cardColor[index] +
-            ' ' +
-            quantityColor[index],
+          cardColor[index] +
+          ' ' +
+          quantityColor[index],
         );
         console.log(
           'retorno de uma fetchCards2: ' +
-            (await this.fetchCards2(cardColor[index], quantityColor[index])),
+          (await this.fetchCards2(cardColor[index], quantityColor[index])),
         );
       });
       //console.log("buildedDeck: " + buildedDeck)

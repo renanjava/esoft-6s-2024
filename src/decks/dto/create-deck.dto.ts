@@ -1,18 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsString, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
+import { IsArray, ValidateNested } from 'class-validator';
 import { CardDto } from './cards.dto';
+import { DeckDto } from './deck.dto';
 
-export class CreateDeckDto {
-  @IsString()
-  @IsNotEmpty()
-  commander: string;
-
+export class CreateDeckDto extends DeckDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CardDto)
-  cards: CardDto[];
-
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
+  cards?: CardDto[];
 }

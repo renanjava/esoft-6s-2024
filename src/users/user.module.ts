@@ -6,9 +6,9 @@ import { UserSchema } from './schema/user.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { Token } from '@/auth/token';
-import { JwtStrategy } from '@/auth/jwt.strategy';
 import { UserRepository } from './user.repository';
 import UserAdapter from './user.adapter';
+import { JwtStrategy } from '@/auth/jwt.strategy';
 
 @Module({
   imports: [
@@ -26,4 +26,4 @@ import UserAdapter from './user.adapter';
   providers: [UserService, UserRepository, UserAdapter, Token, JwtStrategy],
   exports: [UserService],
 })
-export class UserModule {}
+export class UserModule { }

@@ -8,18 +8,18 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserRepository {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) {}
+  ) { }
 
   public async create(user: User): Promise<User> {
     return this.userModel.create(user);
   }
 
   public async findAll(): Promise<User[]> {
-    return this.userModel.find().select(['-password']);
+    return this.userModel.find().select(['-password', '-email']);
   }
 
   public async findById(id: string): Promise<User> {
-    return this.userModel.findById(id).select(['-password']);
+    return this.userModel.findById(id).select(['-password', '-email']);
   }
 
   public async updateById(id: string, updateUserDto: UpdateUserDto) {

@@ -10,6 +10,6 @@ import { Deck, DeckSchema } from './schema/deck.schema';
     MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
   ],
   controllers: [DecksController],
-  providers: [DecksService, DecksRepository],
+  providers: [DecksService, DecksRepository], 
 })
 export class DecksModule { }

@@ -14,11 +14,12 @@ export class Token {
     const payload = {
       email: user.email,
       username: user.username,
+      role: user.role,
     };
     const secretKey = this.configService.get<string>('SECRET_KEY');
     return this.jwtService.sign(payload, {
       secret: secretKey,
-      expiresIn: '60min',
+      expiresIn: '60s',
     });
   }
 }

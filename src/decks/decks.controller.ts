@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param, UseGuards, ValidationPipe, UsePipes } from '@nestjs/common';
 import { DecksService } from './decks.service';
-import { CreateDeckDto } from './dto/create-deck.dto';
-import { JwtAuthGuard } from '@/auth/jwt.guard';
 import { FetchDeckDto } from './dto/fetch-deck.dto';
+import { RolesGuard } from '@/auth/role.guard';
+import { JwtAuthGuard } from '@/auth/jwt.guard';
 
 @Controller('decks')
 export class DecksController {

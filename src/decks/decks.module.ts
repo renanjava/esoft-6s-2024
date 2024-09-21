@@ -4,12 +4,13 @@ import { DecksController } from './decks.controller';
 import { DecksRepository } from './decks.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Deck, DeckSchema } from './schema/deck.schema';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
   ],
   controllers: [DecksController],
-  providers: [DecksService, DecksRepository], 
+  providers: [DecksService, DecksRepository, JwtService],
 })
-export class DecksModule { }
+export class DecksModule {}

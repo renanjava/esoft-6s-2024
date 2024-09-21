@@ -17,18 +17,17 @@ import { JwtAuthGuard } from '@/auth/jwt.guard';
 
 @Controller('users')
 export class UserController {
-  constructor(protected readonly userService: UserService) { }
+  constructor(protected readonly userService: UserService) {}
 
   @Post()
   async create(@Body() user: CreateUserDto): Promise<any> {
     try {
       await this.userService.create(user);
       return {
-        message: "Usuário criado!"
-      }
-    }
-    catch (e) {
-      throw new BadRequestException(e.message)
+        message: 'Usuário criado!',
+      };
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
   }
 

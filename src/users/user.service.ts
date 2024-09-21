@@ -7,6 +7,7 @@ import UserAdapter from './user.adapter';
 import { UserRepository } from './user.repository';
 import bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Role } from '@/role/enum/role.enum';
 
 @Injectable()
 export class UserService {
@@ -25,8 +26,8 @@ export class UserService {
 
     const createdUsuario = {
       ...newUser,
-      role: 'user',
       password: `${bcrypt.hashSync(newUser.password, 10)}`,
+      role: Role.User,
     };
     await this.userRepository.create(createdUsuario);
   }

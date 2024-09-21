@@ -1,12 +1,11 @@
-import { Controller, Get, Post, Body, Param, UseGuards, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { DecksService } from './decks.service';
-import { FetchDeckDto } from './dto/fetch-deck.dto';
-import { RolesGuard } from '@/auth/role.guard';
 import { JwtAuthGuard } from '@/auth/jwt.guard';
+import { FetchDeckDto } from './dto/fetch-deck.dto';
 
 @Controller('decks')
 export class DecksController {
-  constructor(private readonly decksService: DecksService) { }
+  constructor(private readonly decksService: DecksService) {}
 
   @Get('create-deck/:commanderName')
   async getNewDeck(@Param('commanderName') commanderName: string) {
@@ -16,14 +15,12 @@ export class DecksController {
   }
 
   @Post('generate')
-  async generateDeck(
-    @Body() fetchDeckDto: FetchDeckDto
-  ) {
+  async generateDeck(@Body() fetchDeckDto: FetchDeckDto) {
     return this.decksService.build(fetchDeckDto.commander, fetchDeckDto.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAll() {
     return this.decksService.findAll();
   }

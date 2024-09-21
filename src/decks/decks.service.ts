@@ -12,7 +12,7 @@ export function sortedPossibilities(value: number): number {
 
 @Injectable()
 export class DecksService {
-  constructor(private readonly deckRepository: DecksRepository) { }
+  constructor(private readonly deckRepository: DecksRepository) {}
 
   async createDeck(createDeckDto: CreateDeckDto): Promise<Deck> {
     return this.deckRepository.create(createDeckDto);

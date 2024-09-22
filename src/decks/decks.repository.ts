@@ -18,4 +18,8 @@ export class DecksRepository {
   async findAll(): Promise<Deck[]> {
     return this.deckModel.find().exec();
   }
+
+  async findByUser(userId: string): Promise<Deck[] | null> {
+    return this.deckModel.find({ userId: userId }).exec();
+  }
 }

@@ -8,7 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserRepository {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) { }
+  ) {}
 
   public async create(user: User): Promise<User> {
     return this.userModel.create(user);
@@ -29,6 +29,10 @@ export class UserRepository {
 
   public async deleteById() {
     return await this.userModel.deleteOne();
+  }
+
+  public async getIdByEmail(email: any) {
+    return (await this.userModel.findOne({ email: email }))._id.toString();
   }
 
   public async findByEmailOrUsername(

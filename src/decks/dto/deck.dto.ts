@@ -1,11 +1,11 @@
-import { IsString, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export abstract class DeckDto {
-    @IsString()
-    @IsNotEmpty()
-    commander: string;
+  @IsString()
+  @IsNotEmpty()
+  commander: string;
 
-    @IsString()
-    @IsNotEmpty()
-    userId: string;
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }

@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+  Req,
+} from '@nestjs/common';
 import { DecksService } from './decks.service';
 import { JwtAuthGuard } from '@/auth/jwt.guard';
 import { FetchDeckDto } from './dto/fetch-deck.dto';
@@ -27,5 +36,11 @@ export class DecksController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   async findAll() {
     return this.decksService.findAll();
+  }
+
+  @Get('/my-decks')
+  @UseGuards(JwtAuthGuard)
+  async findByLoggedUser(@Req() req: Request) {
+    return this.decksService.findByLoggedUser(req);
   }
 }

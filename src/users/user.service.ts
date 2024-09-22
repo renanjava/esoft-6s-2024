@@ -24,12 +24,12 @@ export class UserService {
       throw new Error('Usuário já existe');
     }
 
-    const createdUsuario = {
+    const newUsuario = {
       ...newUser,
       password: `${bcrypt.hashSync(newUser.password, 10)}`,
       role: Role.User,
     };
-    await this.userRepository.create(createdUsuario);
+    await this.userRepository.create(newUsuario);
   }
 
   public async findAll() {

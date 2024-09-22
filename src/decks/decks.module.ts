@@ -5,12 +5,15 @@ import { DecksRepository } from './decks.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Deck, DeckSchema } from './schema/deck.schema';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { UserModule } from '@/users/user.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
+    UserModule,
   ],
   controllers: [DecksController],
-  providers: [DecksService, DecksRepository, JwtService],
+  providers: [DecksService, DecksRepository, JwtService, ConfigService],
 })
 export class DecksModule {}

@@ -3,6 +3,9 @@ import { CreateDeckDto } from './dto/create-deck.dto';
 import { DecksRepository } from './decks.repository';
 import axios from 'axios';
 import { Deck } from './schema/deck.schema';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { UserRepository } from '@/users/user.repository';
 
 export function sortedPossibilities(value: number): number {
   const possibilities = new Array<number>(0.75, 0.5, 0.25);
@@ -12,7 +15,12 @@ export function sortedPossibilities(value: number): number {
 
 @Injectable()
 export class DecksService {
-  constructor(private readonly deckRepository: DecksRepository) {}
+  constructor(
+    private readonly deckRepository: DecksRepository,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async createDeck(createDeckDto: CreateDeckDto): Promise<Deck> {
     return this.deckRepository.create(createDeckDto);
@@ -86,7 +94,6 @@ export class DecksService {
   }
 
   async generateQuantityColors(colorQuantity, commander) {
-    console.log('caiu aquui');
     let cardQuantity = 99;
     let index = 0;
     const cardQuantityColors = new Array<number>(colorQuantity);
@@ -119,5 +126,18 @@ export class DecksService {
     });
     console.log('final array cardQuantityColors: ' + cardQuantityColors);
     return await this.fetchCards(allowedColors, cardQuantityColors);
+  }
+
+  async findByLoggedUser(req: Request) {
+    const user = await this.jwtService.verifyAsync(
+      req.headers['authorization'].replace('Bearer ', ''),
+      {
+        secret: this.configService.get<string>('SECRET_KEY'),
+      },
+    );
+    console.log(user.email);
+    return await this.deckRepository.findByUser(
+      await this.userRepository.getIdByEmail(user.email),
+    );
   }
 }

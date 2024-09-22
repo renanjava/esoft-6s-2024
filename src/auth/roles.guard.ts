@@ -11,18 +11,12 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-
     if (!requiredRoles) {
-      return true; // Se não houver papéis necessários, qualquer usuário pode acessar
+      return true;
     }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-
-    if (!user || !user.roles) {
-      return false; // Se o usuário ou papéis não estiverem definidos, negar acesso
-    }
-
-    return requiredRoles.some((role) => user.roles.includes(role));
+    return requiredRoles.some((role) => user.role.includes(role));
   }
 }

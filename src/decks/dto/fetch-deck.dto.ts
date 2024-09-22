@@ -1,3 +1,3 @@
 import { DeckDto } from './deck.dto';
 
-export class FetchDeckDto extends DeckDto { }
+export class FetchDeckDto extends DeckDto {}

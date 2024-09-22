@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { DecksService } from './decks.service';
 import { JwtAuthGuard } from '@/auth/jwt.guard';
-import { FetchDeckDto } from './dto/fetch-deck.dto';
 import { Roles } from '@/role/decorator/role.decorator';
 import { Role } from '@/role/enum/role.enum';
 import { RolesGuard } from '@/auth/roles.guard';
@@ -26,9 +25,13 @@ export class DecksController {
     return commander + cards;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('generate')
-  async generateDeck(@Body() fetchDeckDto: FetchDeckDto) {
-    return this.decksService.build(fetchDeckDto.commander, fetchDeckDto.userId);
+  async generateDeck(
+    @Body('commanderName') commanderName: string,
+    @Req() req: Request,
+  ) {
+    return this.decksService.build(commanderName, req);
   }
 
   @Get()

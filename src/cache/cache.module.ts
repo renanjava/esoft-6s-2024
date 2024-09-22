@@ -7,7 +7,7 @@ import { AppService } from './cache.service';
   imports: [
     // O TTL padrão para todas as rotas será de 5 segundos (5000 milissegundos)
     CacheModule.register({
-      ttl: 5,  // TTL em segundos
+      ttl: 5, // TTL em segundos
       max: 100, // Máximo de itens no cache
     }),
   ],

@@ -39,19 +39,10 @@ export class DecksService {
 
   async fetchCards(cardColor: Array<string>, quantityColor?: Array<number>) {
     if (quantityColor) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       let index = -1;
       quantityColor.forEach(async () => {
         index++;
-        console.log(
-          'dentro do quantityColor foreach: ' +
-            cardColor[index] +
-            ' ' +
-            quantityColor[index],
-        );
-        console.log(
-          'retorno de uma fetchCards2: ' +
-            (await this.fetchCards2(cardColor[index], quantityColor[index])),
-        );
       });
       //console.log("buildedDeck: " + buildedDeck)
       //return buildedDeck
@@ -64,16 +55,20 @@ export class DecksService {
     const cardsResponse = await axios.get(cardsUrl);
     const cards = cardsResponse.data.cards;
     if (quantityColor) {
-      console.log(
-        'quantidade do slice fetch2: ' + cards.slice(0, quantityColor).length,
-      );
       return cards.slice(0, quantityColor);
     }
 
     return cards;
   }
 
-  async build(commanderName: string, userId: string) {
+  async build(commanderName: string, req: Request) {
+    const user = await this.jwtService.verifyAsync(
+      req.headers['authorization'].replace('Bearer ', ''),
+      {
+        secret: this.configService.get<string>('SECRET_KEY'),
+      },
+    );
+    const userId = await this.userRepository.getIdByEmail(user.email);
     const commander = await this.fetchCommander(commanderName);
     const colorQuantity = commander.colorIdentity.length;
     const cards = (
@@ -81,7 +76,6 @@ export class DecksService {
         ? await this.generateQuantityColors(colorQuantity, commander)
         : await this.fetchCards(commander.colorIdentity)
     ).slice(0, 99);
-    console.log('numero de cartas tem que ser 99: ' + cards.length);
     const deck = [commander, ...cards];
 
     const createDeckDto: CreateDeckDto = {
@@ -99,17 +93,9 @@ export class DecksService {
     const cardQuantityColors = new Array<number>(colorQuantity);
     let allowedColors = new Array<string>();
     allowedColors = commander.colorIdentity;
-    console.log('allowedColors: ' + allowedColors);
     allowedColors.forEach((e) => {
       const logicForSorting = cardQuantity - colorQuantity + index;
       const valueForSorting = Math.floor(sortedPossibilities(logicForSorting));
-      console.log('e[0] foreach: ' + e[0]);
-      console.log('variavel contadora foreach: ' + index);
-      console.log(
-        'cardQuantity: ' + cardQuantity + 'colorQuantity: ' + colorQuantity,
-      );
-      console.log(logicForSorting);
-      console.log(valueForSorting);
       let sortedNumber;
       if (allowedColors[allowedColors.length - 1] != e)
         sortedNumber = Math.floor(Math.random() * valueForSorting);
@@ -119,12 +105,10 @@ export class DecksService {
           cardQuantityColors.reduce((accumulator, currentValue) => {
             return accumulator + currentValue;
           }, 0);
-      console.log('sortedNumber: ' + sortedNumber);
       cardQuantityColors[index] = sortedNumber;
       cardQuantity -= sortedNumber;
       index++;
     });
-    console.log('final array cardQuantityColors: ' + cardQuantityColors);
     return await this.fetchCards(allowedColors, cardQuantityColors);
   }
 
@@ -135,7 +119,6 @@ export class DecksService {
         secret: this.configService.get<string>('SECRET_KEY'),
       },
     );
-    console.log(user.email);
     return await this.deckRepository.findByUser(
       await this.userRepository.getIdByEmail(user.email),
     );

@@ -18,7 +18,7 @@ export class UserRepository {
     return this.userModel.find().select(['-password', '-email']);
   }
 
-  public async findById(id: string): Promise<User> {
+  public async findById(id: string): Promise<User | null> {
     return this.userModel.findById(id).select(['-password', '-email']);
   }
 

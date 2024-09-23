@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '@/auth/jwt.guard';
 import { Roles } from '@/role/decorator/role.decorator';
 import { Role } from '@/role/enum/role.enum';
 import { RolesGuard } from '@/auth/roles.guard';
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('decks')
 export class DecksController {
@@ -41,9 +42,17 @@ export class DecksController {
     return this.decksService.findAll();
   }
 
-  @Get('/my-decks')
+  @Get('/sem-cache/my-decks')
   @UseGuards(JwtAuthGuard)
   async findByLoggedUser(@Req() req: Request) {
     return this.decksService.findByLoggedUser(req);
+  }
+
+  @Get('/com-cache/my-decks')
+  @CacheKey('usuarioDecks')
+  @CacheTTL(20)
+  @UseGuards(JwtAuthGuard)
+  async findByLoggedUserWithCache(@Req() req: Request) {
+    return this.decksService.findByLoggedUserWithCache(req);
   }
 }

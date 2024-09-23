@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateDeckDto } from './dto/create-deck.dto';
 import { DecksRepository } from './decks.repository';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { Deck } from './schema/deck.schema';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '@/users/user.repository';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 export function sortedPossibilities(value: number): number {
   const possibilities = new Array<number>(0.75, 0.5, 0.25);
@@ -20,6 +21,7 @@ export class DecksService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly userRepository: UserRepository,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async createDeck(createDeckDto: CreateDeckDto): Promise<Deck> {
@@ -122,5 +124,23 @@ export class DecksService {
     return await this.deckRepository.findByUser(
       await this.userRepository.getIdByEmail(user.email),
     );
+  }
+
+  async findByLoggedUserWithCache(req: Request) {
+    const user = await this.jwtService.verifyAsync(
+      req.headers['authorization'].replace('Bearer ', ''),
+      {
+        secret: this.configService.get<string>('SECRET_KEY'),
+      },
+    );
+    const findInCache = await this.cacheManager.get('usuarioDecks');
+    if (findInCache) {
+      return findInCache;
+    }
+    const usuarioDecks = await this.deckRepository.findByUser(
+      await this.userRepository.getIdByEmail(user.email),
+    );
+    await this.cacheManager.set('usuarioDecks', usuarioDecks);
+    return usuarioDecks;
   }
 }

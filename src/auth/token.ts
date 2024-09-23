@@ -19,7 +19,7 @@ export class Token {
     const secretKey = this.configService.get<string>('SECRET_KEY');
     return this.jwtService.sign(payload, {
       secret: secretKey,
-      expiresIn: '60s',
+      expiresIn: '60min',
     });
   }
 }

@@ -27,7 +27,7 @@ export class UserService {
     const newUsuario = {
       ...newUser,
       password: `${bcrypt.hashSync(newUser.password, 10)}`,
-      role: Role.User,
+      role: Role.Admin,
     };
     await this.userRepository.create(newUsuario);
   }

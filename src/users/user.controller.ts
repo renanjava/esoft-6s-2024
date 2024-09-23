@@ -14,6 +14,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '@/auth/jwt.guard';
+import { Roles } from '@/role/decorator/role.decorator';
+import { Role } from '@/role/enum/role.enum';
+import { RolesGuard } from '@/auth/roles.guard';
 
 @Controller('users')
 export class UserController {
@@ -36,7 +39,8 @@ export class UserController {
     return { token: await this.userService.login(user) };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   async findAll() {
     return await this.userService.findAll();

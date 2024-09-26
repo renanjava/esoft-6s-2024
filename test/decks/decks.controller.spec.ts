@@ -16,7 +16,7 @@ async function runLoadTest(
       method: 'GET',
       headers: {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MjcwNjY0NjIsImV4cCI6MTcyNzA3MDA2Mn0.OYErFUIG9-LN3TqxkhiYrg7N6zcMZNtuuE7Z8JWVXgo',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MjczNzg4OTQsImV4cCI6MTcyNzM4MjQ5NH0.e9bkrNywDlqg4b3HYbyR3Pz5ISBxmuJHCjfq42NjaH0',
       },
     });
 

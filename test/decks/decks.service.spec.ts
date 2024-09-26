@@ -1,4 +1,4 @@
-import { sortedPossibilities } from './decks.service';
+import { sortedPossibilities } from '@/decks/decks.service';
 
 describe('Funções externas da classe DecksService', () => {
   it('Deve sortear uma probabilidade de 75% ou 50% ou 25%', () => {

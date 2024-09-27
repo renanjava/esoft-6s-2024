@@ -52,20 +52,17 @@ export class DecksController {
     return this.decksService.findByLoggedUserWithCache(req);
   }
 
-
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile(
+  async uploadFile(@UploadedFile(
     new ParseFilePipe({
       validators: [
         new FileTypeValidator({
           fileType: 'json'
         })
       ]
-
     })
   ) file: Express.Multer.File) {
-    console.log(file);
-    return file;
+    return await this.decksService.fileValidate(file);
   }
 }

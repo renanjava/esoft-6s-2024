@@ -7,12 +7,9 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '@/users/user.repository';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
-
-export function sortedPossibilities(value: number): number {
-  const possibilities = new Array<number>(0.75, 0.5, 0.25);
-  const possibility = Math.floor(Math.random() * 3);
-  return value * possibilities[possibility];
-}
+import { UploadDeckDto } from './dto/upload-deck.dto';
+import { plainToInstance } from 'class-transformer';
+import { Possibilities } from '@/utils/possibilities';
 
 @Injectable()
 export class DecksService {
@@ -22,7 +19,7 @@ export class DecksService {
     private readonly configService: ConfigService,
     private readonly userRepository: UserRepository,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-  ) {}
+  ) { }
 
   async createDeck(createDeckDto: CreateDeckDto): Promise<Deck> {
     return this.deckRepository.create(createDeckDto);
@@ -97,7 +94,7 @@ export class DecksService {
     allowedColors = commander.colorIdentity;
     allowedColors.forEach((e) => {
       const logicForSorting = cardQuantity - colorQuantity + index;
-      const valueForSorting = Math.floor(sortedPossibilities(logicForSorting));
+      const valueForSorting = Math.floor(Possibilities.sortedPossibilities(logicForSorting));
       let sortedNumber;
       if (allowedColors[allowedColors.length - 1] != e)
         sortedNumber = Math.floor(Math.random() * valueForSorting);
@@ -142,5 +139,12 @@ export class DecksService {
     );
     await this.cacheManager.set('usuarioDecks', usuarioDecks);
     return usuarioDecks;
+  }
+
+  async fileValidate(file: Express.Multer.File) {
+    const jsonFile = JSON.parse(file.buffer.toString('utf8'));
+    const uploadDeckDto = plainToInstance(UploadDeckDto, jsonFile);
+    console.log(uploadDeckDto);
+    return uploadDeckDto;
   }
 }

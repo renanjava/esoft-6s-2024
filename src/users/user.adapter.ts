@@ -1,13 +1,14 @@
+import { Role } from '@/role/enum/role.enum';
 import Adapter from '../common/adapter/adapter';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './schema/user.schema';
 import { Injectable } from '@nestjs/common';
+import { Password } from '@/utils/password';
 
 @Injectable()
 export default class UserAdapter
-  implements Adapter<User, CreateUserDto, UpdateUserDto>
-{
+  implements Adapter<User, CreateUserDto, UpdateUserDto> {
   public updateToEntity(dto: UpdateUserDto): User {
     return {
       email: dto.email,
@@ -19,7 +20,8 @@ export default class UserAdapter
     return {
       email: dto.email,
       username: dto.username,
-      password: dto.password,
+      password: `${Password.generateEncrypted(dto.password)}`,
+      role: Role.User
     } as User;
   }
 }

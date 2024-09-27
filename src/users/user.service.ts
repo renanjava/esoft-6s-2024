@@ -5,9 +5,8 @@ import { Token } from '@/auth/token';
 import { LoginUserDto } from './dto/login-user.dto';
 import UserAdapter from './user.adapter';
 import { UserRepository } from './user.repository';
-import bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Role } from '@/role/enum/role.enum';
+import { Password } from '@/utils/password';
 
 @Injectable()
 export class UserService {
@@ -15,7 +14,7 @@ export class UserService {
     protected readonly userRepository: UserRepository,
     protected readonly adapter: UserAdapter,
     protected readonly token: Token,
-  ) {}
+  ) { }
 
   public async create(newUser: CreateUserDto): Promise<void> {
     const existsUser: User | null = await this.validateEmailOrUsername(newUser);
@@ -24,12 +23,8 @@ export class UserService {
       throw new Error('Usuário já existe');
     }
 
-    const newUsuario = {
-      ...newUser,
-      password: `${bcrypt.hashSync(newUser.password, 10)}`,
-      role: Role.Admin,
-    };
-    await this.userRepository.create(newUsuario);
+    const createUserDto = this.adapter.createToEntity(newUser);
+    await this.userRepository.create(createUserDto);
   }
 
   public async findAll() {
@@ -57,7 +52,7 @@ export class UserService {
       throw new HttpException('Não encontrado', HttpStatus.NOT_FOUND);
     }
 
-    const userIsValid: boolean | null = bcrypt.compareSync(
+    const userIsValid: boolean | null = await Password.verify(
       loginUser.password,
       foundUser.password,
     );

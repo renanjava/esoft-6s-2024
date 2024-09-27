@@ -6,6 +6,10 @@ import {
   UseGuards,
   Request,
   Req,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { DecksService } from './decks.service';
 import { JwtAuthGuard } from '@/auth/jwt.guard';
@@ -13,10 +17,11 @@ import { Roles } from '@/role/decorator/role.decorator';
 import { Role } from '@/role/enum/role.enum';
 import { RolesGuard } from '@/auth/roles.guard';
 import { CacheKey } from '@nestjs/cache-manager';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('decks')
 export class DecksController {
-  constructor(private readonly decksService: DecksService) {}
+  constructor(private readonly decksService: DecksService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post('generate')
@@ -45,5 +50,22 @@ export class DecksController {
   @UseGuards(JwtAuthGuard)
   async findByLoggedUserWithCache(@Req() req: Request) {
     return this.decksService.findByLoggedUserWithCache(req);
+  }
+
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadFile(@UploadedFile(
+    new ParseFilePipe({
+      validators: [
+        new FileTypeValidator({
+          fileType: 'json'
+        })
+      ]
+
+    })
+  ) file: Express.Multer.File) {
+    console.log(file);
+    return file;
   }
 }

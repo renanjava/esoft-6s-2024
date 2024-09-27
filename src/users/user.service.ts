@@ -24,6 +24,7 @@ export class UserService {
     }
 
     const createUserDto = this.adapter.createToEntity(newUser);
+    createUserDto.password = await Password.generateEncrypted(createUserDto.password);
     await this.userRepository.create(createUserDto);
   }
 

@@ -4,7 +4,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './schema/user.schema';
 import { Injectable } from '@nestjs/common';
-import { Password } from '@/utils/password';
 
 @Injectable()
 export default class UserAdapter
@@ -20,7 +19,7 @@ export default class UserAdapter
     return {
       email: dto.email,
       username: dto.username,
-      password: `${Password.generateEncrypted(dto.password)}`,
+      password: dto.password,
       role: Role.User
     } as User;
   }

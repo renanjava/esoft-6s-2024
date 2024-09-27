@@ -2,6 +2,64 @@
     "commander": "Atraxa, Praetors' Voice",
     "cards": [
         {
+            "name": "Afflict",
+            "manaCost": "{2}{B}",
+            "cmc": 3,
+            "colors": [
+                "B"
+            ],
+            "colorIdentity": [
+                "B"
+            ],
+            "type": "Instant",
+            "supertypes": [],
+            "types": [
+                "Instant"
+            ],
+            "subtypes": [],
+            "rarity": "Common",
+            "set": "10E",
+            "setName": "Tenth Edition",
+            "text": "Target creature gets -1/-1 until end of turn.\nDraw a card.",
+            "artist": "Roger Raupp",
+            "number": "125",
+            "layout": "normal",
+            "multiverseid": "135206",
+            "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=135206&type=card",
+            "variations": [],
+            "_id": "66f5f13b3fd68951ea1556ce",
+            "rulings": []
+        },
+        {
+            "name": "Agonizing Memories",
+            "manaCost": "{2}{B}{B}",
+            "cmc": 4,
+            "colors": [
+                "B"
+            ],
+            "colorIdentity": [
+                "B"
+            ],
+            "type": "Sorcery",
+            "supertypes": [],
+            "types": [
+                "Sorcery"
+            ],
+            "subtypes": [],
+            "rarity": "Uncommon",
+            "set": "10E",
+            "setName": "Tenth Edition",
+            "text": "Look at target player's hand and choose two cards from it. Put them on top of that player's library in any order.",
+            "artist": "Adam Rex",
+            "number": "126",
+            "layout": "normal",
+            "multiverseid": "135228",
+            "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=135228&type=card",
+            "variations": [],
+            "_id": "66f5f13b3fd68951ea1556cf",
+            "rulings": []
+        },
+        {
             "name": "Atraxa, Praetors' Voice",
             "manaCost": "{G}{W}{U}{B}",
             "cmc": 4,
@@ -76,64 +134,6 @@
                 }
             ],
             "_id": "66f5f13a3fd68951ea1556c7"
-        },
-        {
-            "name": "Afflict",
-            "manaCost": "{2}{B}",
-            "cmc": 3,
-            "colors": [
-                "B"
-            ],
-            "colorIdentity": [
-                "B"
-            ],
-            "type": "Instant",
-            "supertypes": [],
-            "types": [
-                "Instant"
-            ],
-            "subtypes": [],
-            "rarity": "Common",
-            "set": "10E",
-            "setName": "Tenth Edition",
-            "text": "Target creature gets -1/-1 until end of turn.\nDraw a card.",
-            "artist": "Roger Raupp",
-            "number": "125",
-            "layout": "normal",
-            "multiverseid": "135206",
-            "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=135206&type=card",
-            "variations": [],
-            "_id": "66f5f13b3fd68951ea1556ce",
-            "rulings": []
-        },
-        {
-            "name": "Agonizing Memories",
-            "manaCost": "{2}{B}{B}",
-            "cmc": 4,
-            "colors": [
-                "B"
-            ],
-            "colorIdentity": [
-                "B"
-            ],
-            "type": "Sorcery",
-            "supertypes": [],
-            "types": [
-                "Sorcery"
-            ],
-            "subtypes": [],
-            "rarity": "Uncommon",
-            "set": "10E",
-            "setName": "Tenth Edition",
-            "text": "Look at target player's hand and choose two cards from it. Put them on top of that player's library in any order.",
-            "artist": "Adam Rex",
-            "number": "126",
-            "layout": "normal",
-            "multiverseid": "135228",
-            "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=135228&type=card",
-            "variations": [],
-            "_id": "66f5f13b3fd68951ea1556cf",
-            "rulings": []
         },
         {
             "name": "Ascendant Evincar",

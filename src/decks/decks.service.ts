@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateDeckDto } from './dto/create-deck.dto';
 import { DecksRepository } from './decks.repository';
 import axios from 'axios';
-import { Deck } from './schema/deck.schema';
+import { CardSchema, Deck } from './schema/deck.schema';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '@/users/user.repository';
@@ -144,7 +144,12 @@ export class DecksService {
   async fileValidate(file: Express.Multer.File) {
     const jsonFile = JSON.parse(file.buffer.toString('utf8'));
     const uploadDeckDto = plainToInstance(UploadDeckDto, jsonFile);
-    console.log(uploadDeckDto);
+    const commander = uploadDeckDto.cards.filter((e) => e.name == uploadDeckDto.commander)
+    const commanderColors = commander[0].colorIdentity
+    uploadDeckDto.cards.forEach((cartas) => {
+      if (!(commanderColors.some(cores => cartas.colorIdentity.includes(cores))))
+        throw new BadRequestException()
+    })
     return uploadDeckDto;
   }
 }
